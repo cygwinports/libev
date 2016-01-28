@@ -1,0 +1,34 @@
+NAME="libev"
+VERSION=4.22
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="High-performance event loop library"
+DESCRIPTION="libev is a high-performance event loop/event model with lots of
+features.  Libev is loosely modelled after libevent and the Event perl module,
+but is smaller, faster, scales better, is more correct, and more featureful."
+HOMEPAGE="http://software.schmorp.de/pkg/libev.html"
+SRC_URI="http://dist.schmorp.de/libev/libev-${VERSION}.tar.gz"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/rpms/libev.git/plain/libev-4.20-Respect-the-CFLAGS-if-defined.patch
+	4.22-no-undefined.patch
+"
+
+PKG_NAMES="libev4 libev-devel"
+libev4_CONTENTS="
+	usr/bin/cygev-4.dll
+	usr/share/doc/
+"
+libev_devel_CONTENTS="
+	usr/include/ev.h
+	usr/include/ev++.h
+	usr/lib/libev.dll.a
+	usr/share/man/man3/ev.3*
+"
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	# compatibility header, conflicts with libevent-devel
+	rm -f ${D}/usr/include/event.h
+}
